@@ -2,6 +2,7 @@ package com.example.demoRest.controller;
 
 import com.example.demoRest.exceptions.EmployeeNotFoundException;
 import com.example.demoRest.payroll.Employee;
+import com.example.demoRest.payroll.EmployeeModelAssembler;
 import com.example.demoRest.payroll.EmployeeRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -23,14 +24,16 @@ public class EmployeeController {
 
     // == fields ==
     private final EmployeeRepository repository;
+    private final EmployeeModelAssembler assembler;
 
-    EmployeeController(EmployeeRepository repository){
+    EmployeeController(EmployeeRepository repository, EmployeeModelAssembler assembler){
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     // Aggregate root
     @GetMapping("/employees")
-    CollectionModel<EntityModel<Employee>> all() {
+    public CollectionModel<EntityModel<Employee>> all() {
         List<EntityModel<Employee>> employees = repository.findAll().stream()
                 .map(employee -> new EntityModel<>(employee,
                         linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
