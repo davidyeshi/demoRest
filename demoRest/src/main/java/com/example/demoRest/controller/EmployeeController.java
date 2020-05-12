@@ -54,9 +54,7 @@ public class EmployeeController {
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
 
-        return new EntityModel<>(employee,
-                linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
-                linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+        return assembler.toModel(employee);
     }
 
     @PutMapping("/employees/{id}")
