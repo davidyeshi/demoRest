@@ -14,10 +14,16 @@ public class Employee {
     private @Id @GeneratedValue Long id;
     private String firstName;
     private String lastName;
+    private String name;
     private String role;
-
     // == constructors ==
+
     Employee() {}
+
+    public Employee(String name, String role) {
+        this.name = name;
+        this.role = role;
+    }
 
     public Employee(String firstName, String lastName, String role) {
         this.firstName = firstName;
